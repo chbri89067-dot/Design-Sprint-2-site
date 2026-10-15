@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 45 280 145" role="img" aria-labelledby="title">
+  <title id="title">Running rat, adapted from the supplied SVG Repo silhouette</title>
+  <style>
+    .body{animation:bound .44s ease-in-out infinite;transform-origin:130px 125px}
+    .limb{animation:stride .44s ease-in-out infinite;transform-origin:0 0;animation-delay:var(--phase)}
+    .shin{animation:flex .44s ease-in-out infinite;transform-origin:0 0;animation-delay:var(--phase)}
+    .tail{animation:tail .44s ease-in-out infinite;transform-origin:48px 137px}
+    .far{fill:#77766f}.near,.body{fill:#c7c5bb}.paused *{animation-play-state:paused!important}
+    @keyframes bound{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
+    @keyframes stride{0%,100%{transform:rotate(-30deg)}28%{transform:rotate(30deg)}53%{transform:rotate(37deg)}78%{transform:rotate(-12deg)}}
+    @keyframes flex{0%,100%{transform:rotate(30deg)}28%{transform:rotate(-12deg)}53%{transform:rotate(-42deg)}78%{transform:rotate(-18deg)}}
+    @keyframes tail{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(4deg)}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+  <g transform="translate(278 0) scale(-1 1)">
+    <path class="tail near" d="M50 129C30 144 27 164 8 159C-7 155 0 135 17 132C1 130-10 152 2 163C17 177 37 160 55 143Z"/>
+    <g class="far" transform="translate(82 129)"><g class="limb" style="--phase:-.11s"><path d="M3-6C-13-5-19 8-11 22L-4 25 2 17 10 5Z"/><g transform="translate(-5 20)"><g class="shin" style="--phase:-.11s"><path d="M-5-3L1-3 6 20 19 23C22 23 23 27 18 28L2 27C-1 26-2 23-2 20Z"/></g></g></g></g>
+    <g class="far" transform="translate(177 129)"><g class="limb" style="--phase:-.32s"><path d="M-5-4L4-3 7 21 0 25-6 9Z"/><g transform="translate(3 21)"><g class="shin" style="--phase:-.32s"><path d="M-4-3L3-3 4 20 17 24C21 26 18 29 14 28L1 26C-3 25-5 20-5 15Z"/></g></g></g></g>
+    <path class="body" d="M220.195 71.427c-.589-7.654-9.135-15.619-17.979-16.209-8.844-.584-17.398.301-12.087 6.483 5.308 6.188 7.074 12.091 4.423 11.212-2.66-.896-13.267-7.08-45.104-2.066-4.126 1.17-21.221-12.682-44.513-12.977-23.283-.295-40.381 6.346-64.85 72.296C35 143 45 154 63 157 92 162 122 151 140 136 151 126 171 141 191 140c2.65-5.59 12.674-21.229 24.463-22.988 11.789-1.777 42.451 7.361 47.459 0 5.012-7.372-6.783-11.512-15.918-28.611C243.779 80.572 238.768 71.728 220.195 71.427Z"/>
+    <g class="near" transform="translate(78 131)"><g class="limb" style="--phase:0s"><path d="M3-10C-14-9-21 5-13 20L-3 26 5 15 12 2Z"/><g transform="translate(-5 21)"><g class="shin" style="--phase:0s"><path d="M-5-3L2-3 7 21 22 25C26 27 22 30 18 29L2 27C-1 26-2 23-3 19Z"/></g></g></g></g>
+    <g class="near" transform="translate(180 132)"><g class="limb" style="--phase:-.22s"><path d="M-6-7L4-6 7 19 0 24-6 9Z"/><g transform="translate(3 20)"><g class="shin" style="--phase:-.22s"><path d="M-4-3L3-3 5 20 19 24C23 26 20 29 16 28L1 26C-3 25-5 21-5 15Z"/></g></g></g></g>
+    <circle cx="231" cy="88" r="2.2" fill="#171715"/>
+  </g>
+</svg>

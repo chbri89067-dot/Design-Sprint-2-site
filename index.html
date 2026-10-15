@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="An atlas of NYC rat reports, 2010–2017. Explore the locations, compare boroughs, and experience the scale through three visual studies.">
+  <title>NYC Rat Sightings | Design Sprint 2</title>
+  <link rel="icon" type="image/svg+xml" href="assets/rat-icon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#map">Skip to the dashboard</a>
+  <header class="masthead" id="top">
+    <a class="wordmark" href="#top" aria-label="Design Sprint 2, back to top">DESIGN SPRINT <span>02</span></a>
+    <nav aria-label="Dashboard sections"><a href="#map">01 <span>Locations</span></a><a href="#counts">02 <span>Comparisons</span></a><a href="#scale">03 <span>Scale</span></a></nav>
+  </header>
+  <main>
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-art" aria-hidden="true"><img src="assets/plague-doctor.jpg" width="399" height="501" alt="" fetchpriority="high"></div>
+      <div class="hero-copy"><p class="eyebrow">New York City / 2010–2017</p><h1 id="hero-title">NYC Rat<br>Sightings</h1><p class="hero-description">A city leaves a record.<br>Follow eight years of reported sightings, from the street to the skyline.</p><a class="text-link" href="#map">Enter the dashboard <span aria-hidden="true">↗</span></a></div>
+      <div class="rat-runway" aria-hidden="true"><div class="running-rat"></div></div>
+      <div class="hero-bottom"><a class="scroll-prompt" href="#map"><span class="scroll-line" aria-hidden="true"></span>Scroll to explore</a><p><strong>101,914</strong><span>recorded reports</span></p><button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button></div>
+    </section>
+    <section class="chapter map-chapter" id="map" aria-labelledby="map-heading">
+      <div class="chapter-heading reveal"><p class="eyebrow">01 / Locations</p><div><h2 id="map-heading">Where the reports land.</h2><p>One dot for each report with usable coordinates. Choose a year to see how the record of sightings spreads across the city.</p></div></div>
+      <div class="map-layout">
+        <aside class="map-sidebar">
+          <p class="control-label" id="year-label">Choose a year</p>
+          <div class="year-controls" role="group" aria-labelledby="year-label"><button type="button" data-year="all" aria-pressed="true">All years</button><button type="button" data-year="2010" aria-pressed="false">2010</button><button type="button" data-year="2011" aria-pressed="false">2011</button><button type="button" data-year="2012" aria-pressed="false">2012</button><button type="button" data-year="2013" aria-pressed="false">2013</button><button type="button" data-year="2014" aria-pressed="false">2014</button><button type="button" data-year="2015" aria-pressed="false">2015</button><button type="button" data-year="2016" aria-pressed="false">2016</button><button type="button" data-year="2017" aria-pressed="false">2017*</button></div>
+          <label class="outline-control"><input id="outlines" type="checkbox" checked> Borough outlines &amp; names</label>
+          <div class="map-count" role="status" aria-live="polite" aria-atomic="true"><strong id="map-count">…</strong><span id="map-count-label">Loading mapped reports</span></div>
+          <p class="fine-print">* 2017 ends on September 16.</p><p class="fine-print">A dot is a report, not an individual rat. Overlapping dots can hide repeated reports at the same location.</p><p class="credit">Map study / <a href="https://github.com/daniela111324">Daniela</a></p>
+        </aside>
+        <div class="map-panel">
+          <div class="map-toolbar"><span id="map-period">2010–2017</span><div role="group" aria-label="Map zoom"><button id="zoom-in" type="button" aria-label="Zoom in">+</button><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="zoom-reset" type="button">Reset view</button></div></div>
+          <div class="map-stage" id="map-stage" tabindex="0" role="group" aria-label="NYC rat report map. Use the zoom buttons, drag to pan, or use arrow keys to pan."><canvas id="report-map" aria-hidden="true"></canvas><svg id="borough-map" aria-hidden="true" viewBox="0 0 900 780"></svg><p id="map-status" role="status">Loading the city’s reports…</p></div>
+          <div class="map-caption"><span><i aria-hidden="true"></i> Reported sighting</span><span>Drag to pan · + / − to zoom</span></div><p class="fine-print" id="map-exclusion"></p>
+        </div>
+      </div>
+      <details class="map-table"><summary>Read mapped counts by borough</summary><div id="map-data-table" class="table-scroll" tabindex="0" role="region" aria-label="Mapped reports by borough"></div></details>
+    </section>
+    <section class="chapter" id="counts" aria-labelledby="counts-heading">
+      <div class="chapter-heading reveal"><p class="eyebrow">02 / Comparisons</p><div><h2 id="counts-heading">Five boroughs.<br>Different patterns.</h2><p>Compare the full recorded period, then trace the changes year by year. Use the borough filters to narrow both charts.</p></div></div>
+      <div class="coverage-note"><span>Reading the data</span><p>These charts include 101,913 reports assigned to a borough. One report has an unspecified borough. 2017 is a partial year, so its count cannot show a full-year decline.</p></div>
+      <fieldset class="filters"><legend>Show boroughs</legend><div class="filter-options"><label><input type="checkbox" value="Bronx" checked> Bronx</label><label><input type="checkbox" value="Brooklyn" checked> Brooklyn</label><label><input type="checkbox" value="Manhattan" checked> Manhattan</label><label><input type="checkbox" value="Queens" checked> Queens</label><label><input type="checkbox" value="Staten Island" checked> Staten Island</label></div></fieldset>
+      <div id="charts" class="charts"><rat-totals-chart></rat-totals-chart><rat-trend-chart></rat-trend-chart></div><p class="credit">Analytical charts / <a href="https://github.com/chbri89067-dot">Brian Chung</a></p>
+    </section>
+    <section class="chapter scale-chapter" id="scale" aria-labelledby="scale-heading">
+      <div class="chapter-heading reveal"><p class="eyebrow">03 / Scale</p><div><h2 id="scale-heading">Let the record fall.</h2><p>Lubudde’s three visual simulations turn reports into falling rats. Scroll through each borough to move the film forward, or use its playback controls.</p></div></div>
+      <p class="scale-note">Each falling rat represents a formal report in the visual study. The films cover the Bronx, Staten Island, and Queens. They illustrate reported sightings, not a measured rat population.</p>
+      <article class="film-track" id="bronx-film" data-video="bronx-video"><div class="film-sticky"><div class="film-heading"><div><p class="eyebrow">Study 01 / Bronx</p><h3>The Bronx</h3></div><p><strong>20,706</strong><span>reports / 2010–2017*</span></p></div><video id="bronx-video" src="Rats/media/bronx.mp4" muted playsinline preload="metadata" controls aria-label="Bronx falling-rat simulation"></video><div class="film-footer"><span>Scroll to advance the film</span><progress value="0" max="1" aria-label="Bronx film progress"></progress></div></div></article>
+      <article class="film-track" id="staten-film" data-video="staten-video"><div class="film-sticky"><div class="film-heading"><div><p class="eyebrow">Study 02 / Staten Island</p><h3>Staten Island</h3></div><p><strong>4,920</strong><span>reports / 2010–2017*</span></p></div><video id="staten-video" src="Rats/media/staten_island.mp4" muted playsinline preload="metadata" controls aria-label="Staten Island falling-rat simulation"></video><div class="film-footer"><span>Scroll to advance the film</span><progress value="0" max="1" aria-label="Staten Island film progress"></progress></div></div></article>
+      <article class="film-track" id="queens-film" data-video="queens-video"><div class="film-sticky"><div class="film-heading"><div><p class="eyebrow">Study 03 / Queens</p><h3>Queens</h3></div><p><strong>14,811</strong><span>reports / 2010–2017*</span></p></div><video id="queens-video" src="Rats/media/queens.mp4" muted playsinline preload="metadata" controls aria-label="Queens falling-rat simulation"></video><div class="film-footer"><span>Scroll to advance the film</span><progress value="0" max="1" aria-label="Queens film progress"></progress></div></div></article>
+      <p class="credit">Visual simulations / <a href="https://github.com/lubudde">Lubudde</a> · * 2017 is partial.</p>
+    </section>
+    <section class="sources chapter" id="sources" aria-labelledby="sources-heading">
+      <p class="eyebrow">Sources &amp; context</p><h2 id="sources-heading">Behind the record.</h2><div class="source-columns"><p>The dataset covers January 1, 2010 through September 16, 2017. Report counts reflect what people reported, along with differences in reporting activity. They do not measure population size or sightings per square mile.</p><div><a href="https://www.kaggle.com/datasets/new-york-city/nyc-rat-sightings">NYC Rat Sightings dataset <span>Kaggle</span></a><a href="https://data.cityofnewyork.us/City-Government/Borough-Boundaries/gthc-hcne">Borough outlines <span>NYC Open Data / DCP</span></a><a href="https://github.com/chbri89067-dot/Design-Sprint-2-site">Website files <span>GitHub</span></a></div></div><p class="fine-print">The map includes reports with usable latitude and longitude. Modern borough outlines provide geographic context. Hero artwork supplied by the team; rat silhouette adapted from the supplied SVG Repo asset.</p>
+    </section>
+  </main>
+  <footer class="page-footer"><span>Design Sprint 02 / NYC Rat Sightings</span><a href="#top">Back to the top ↑</a></footer>
+</body>
+</html>
