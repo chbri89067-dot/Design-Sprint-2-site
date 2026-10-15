@@ -761,24 +761,6 @@ thead th {
   line-height:1.6;
   margin:0;
 }
-.hero-rat-face {
-  position:absolute;
-  z-index:1;
-  left:4vw;
-  top:clamp(250px,30svh,320px);
-  bottom:180px;
-  width:clamp(360px,48vw,720px);
-  pointer-events:none;
-}
-.hero-rat-face svg {
-  display:block;
-  width:100%;
-  height:100%;
-  overflow:visible;
-}
-.motion-paused .hero-rat-face svg * {
-  animation-play-state:paused!important;
-}
 .hero-bottom {
   position:absolute;
   inset:0;
@@ -843,7 +825,6 @@ thead th {
   .hero-copy { max-width:100%; }
   .hero h1 { font-size:clamp(38px,12vw,68px); letter-spacing:-1.5px; margin-bottom:24px; }
   .hero-description { font-size:16px; max-width:290px; }
-  .hero-rat-face { left:22px; top:210px; bottom:180px; width:calc(100% - 44px); }
   .scroll-prompt { bottom:24px; font-size:12px; letter-spacing:1px; gap:0; padding:0; }
   .scroll-line { display:none; }
   .motion-toggle { right:22px; bottom:24px; font-size:9px; padding:0 8px; }
@@ -856,5 +837,5 @@ thead th {
 @media print {
   .hero { height:auto; min-height:0; padding:30px; }
   .hero h1 { font-size:64px; }
-  .hero-bottom,.hero-rat-face { display:none; }
+  .hero-bottom { display:none; }
 }
