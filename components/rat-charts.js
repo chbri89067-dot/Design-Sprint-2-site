@@ -60,7 +60,7 @@ const css = `
   .point .halo { fill: transparent; stroke: transparent; stroke-width: 3px; }
   .point:focus .halo { stroke: #e9e7e1; }
   .point:hover .halo { stroke: #8e8d83; stroke-width: 1px; }
-  .readout { min-height: 44px; margin: 12px 0; padding: 10px 12px; border: 1px solid #393936; border-radius: 0; font-size: 13px; color: #c5c3ba; background: #111110; line-height: 1.5; }
+  .readout { min-height: 44px; margin: 12px 0; padding: 10px 12px; border: 1px solid #393936; border-radius: 0; font-size: 14px; color: #c5c3ba; background: #111110; line-height: 1.5; }
   .legend { display: flex; gap: 10px 18px; flex-wrap: wrap; margin: 0 0 12px; padding: 0; list-style: none; }
   .legend li { display: flex; align-items: center; gap: 10px; font-size: 16px; line-height: 1.6; }
   .legend svg { width: 46px; height: 18px; flex: none; }
@@ -138,10 +138,10 @@ class RatChart extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${css}</style>
       <figure aria-labelledby="${this._id}-heading">
         <div class="chart-heading"><div><h2 id="${this._id}-heading">${escape(this.heading)}</h2><p class="subtitle">${escape(this.subtitle)}</p></div><button type="button" aria-label="Download ${this.kind === 'totals' ? 'borough totals' : 'annual trend'} chart as SVG">Save SVG</button></div>
+        <p class="readout ${this.kind === 'totals' ? 'sr-only' : ''}" role="status" aria-live="polite" aria-atomic="true">Focus or hover over a ${this.kind === 'totals' ? 'bar' : 'marker'} to read its exact count.</p>
         <p class="chart-scroll-hint">On smaller screens, swipe across the chart to see every label.</p>
         <div class="plot" tabindex="0" role="region" aria-label="Scrollable ${this.kind === 'totals' ? 'borough totals' : 'annual trend'} chart"></div>
         ${this.kind === 'trend' ? this._legend() : ''}
-        <p class="readout ${this.kind === 'totals' ? 'sr-only' : ''}" role="status" aria-live="polite" aria-atomic="true">Focus or hover over a ${this.kind === 'totals' ? 'bar' : 'marker'} to read its exact count.</p>
         <p class="note"><strong>2017 is a partial year</strong>, with reports through September 16. Reports with an unspecified borough are excluded.</p>
         <details ${open ? 'open' : ''}><summary>View the data table</summary><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable ${this.kind === 'totals' ? 'borough totals' : 'annual counts'} table">${this._table()}</div></details>
       </figure>`;

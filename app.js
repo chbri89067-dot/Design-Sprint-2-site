@@ -1,5 +1,5 @@
-import './components/rat-charts.js?v=20261015-1';
-import { initMap } from './components/report-map.js';
+import './components/rat-charts.js?v=20261015-2';
+import { initMap } from './components/report-map.js?v=20261015-2';
 
 const charts = [...document.querySelectorAll('rat-totals-chart, rat-trend-chart')];
 const controls = [...document.querySelectorAll('.filters input')];

@@ -12,7 +12,6 @@ export async function initMap() {
   const status = document.querySelector('#map-status');
   const buttons = [...document.querySelectorAll('[data-year]')];
   const outlines = document.querySelector('#outlines');
-  const zoomButtons = ['#zoom-in', '#zoom-out', '#zoom-reset'].map(s => document.querySelector(s));
   let data, boundaries;
   try {
     [data, boundaries] = await Promise.all([
@@ -22,7 +21,7 @@ export async function initMap() {
     if (!data.years || !boundaries.features?.length) throw Error();
   } catch {
     status.textContent = 'The map could not load. Refresh the page or view the source dataset linked in Sources.';
-    [...buttons, outlines, ...zoomButtons].forEach(b => b.disabled = true);
+    [...buttons, outlines].forEach(b => b.disabled = true);
     document.querySelector('#map-count').textContent = 'Unavailable';
     document.querySelector('#map-count-label').textContent = 'Map data could not load';
     return;
@@ -78,36 +77,108 @@ export async function initMap() {
     buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.year === year)));
     document.querySelector('#map-count').textContent = format.format(total);
     document.querySelector('#map-count-label').textContent = `mapped reports / ${period}`;
-    document.querySelector('#map-period').textContent = period;
-    stage.setAttribute('aria-label', `NYC map, ${format.format(total)} reports, ${period}. Drag or use arrow keys to pan; use plus and minus to zoom. Counts are in the data table below.`);
+    stage.setAttribute('aria-label', `NYC map, ${format.format(total)} reports, ${period}. Use the mouse wheel or plus and minus keys to zoom. Drag or use arrow keys to pan. Press Home to reset. Counts are in the data table below.`);
     document.querySelector('#map-data-table').innerHTML = `<table><caption>Mapped reports, ${period}. Counts exclude unusable or missing coordinates.</caption><thead><tr><th scope="col">Borough</th><th scope="col">Mapped reports</th></tr></thead><tbody>${data.boroughs.map(b=>`<tr><th scope="row">${b}</th><td>${format.format(counts[b] || 0)}</td></tr>`).join('')}</tbody><tfoot><tr><th scope="row">Total</th><td>${format.format(total)}</td></tr></tfoot></table>`;
     schedule();
   }
-  function setZoom(value) {
-    const next = Math.max(1,Math.min(6,value));
-    const factor = next/zoom; panX *= factor; panY *= factor; zoom=next;
-    if (zoom === 1) {panX=0;panY=0;}
+  let guidanceTimer, wasVisible = false, pointerMoved = false;
+  function hideGuidance() {
+    clearTimeout(guidanceTimer);
+    stage.classList.remove('show-guidance');
+  }
+  const guidanceObserver = new IntersectionObserver(([entry]) => {
+    if (entry.intersectionRatio >= .35 && !wasVisible) {
+      wasVisible = true;
+      stage.classList.add('show-guidance');
+      guidanceTimer = setTimeout(hideGuidance, 3200);
+    } else if (entry.intersectionRatio < .1) {
+      wasVisible = false;
+      pointerMoved = false;
+      hideGuidance();
+    }
+  }, { threshold: [0, .1, .35] });
+  guidanceObserver.observe(stage);
+  function setZoom(value, anchor) {
+    const next = Math.max(1, Math.min(6, value));
+    const factor = next / zoom;
+    const x = anchor?.[0] ?? 0, y = anchor?.[1] ?? 0;
+    panX = x - (x - panX) * factor;
+    panY = y - (y - panY) * factor;
+    zoom = next;
+    if (zoom === 1) { panX = 0; panY = 0; }
     stage.classList.toggle('is-zoomed', zoom > 1);
-    zoomButtons[0].disabled = zoom >= 6; zoomButtons[1].disabled = zoom <= 1;
     schedule();
   }
-  buttons.forEach(b => b.addEventListener('click',()=> {year=b.dataset.year;update();}));
+  function anchorAt(clientX, clientY) {
+    const rect = stage.getBoundingClientRect();
+    return [clientX - rect.left - rect.width / 2, clientY - rect.top - rect.height / 2];
+  }
+  buttons.forEach(b => b.addEventListener('click', () => { year = b.dataset.year; update(); }));
   outlines.addEventListener('change', schedule);
-  zoomButtons[0].addEventListener('click',()=>setZoom(zoom*1.5));
-  zoomButtons[1].addEventListener('click',()=>setZoom(zoom/1.5));
-  zoomButtons[2].addEventListener('click',()=>{panX=0;panY=0;setZoom(1);});
+  // Moving the pointer or focusing the map expresses intent to interact.
+  // Scrolling the page into this section alone must not capture the wheel.
+  stage.addEventListener('wheel', e => {
+    if (!pointerMoved && document.activeElement !== stage && !e.ctrlKey) return;
+    const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? stage.clientHeight : 1);
+    if (!delta || (zoom === 1 && delta > 0) || (zoom === 6 && delta < 0)) return;
+    e.preventDefault();
+    hideGuidance();
+    setZoom(zoom * Math.exp(-Math.max(-240, Math.min(240, delta)) * .0025), anchorAt(e.clientX, e.clientY));
+  }, { passive: false });
   stage.addEventListener('keydown', e => {
-    const delta = {ArrowLeft:[40,0],ArrowRight:[-40,0],ArrowUp:[0,40],ArrowDown:[0,-40]}[e.key];
-    if(delta){e.preventDefault();panX+=delta[0];panY+=delta[1];schedule();}
-    if(e.key==='+' || e.key==='='){e.preventDefault();setZoom(zoom*1.5);}
-    if(e.key==='-'){e.preventDefault();setZoom(zoom/1.5);}
-    if(e.key==='Home'){e.preventDefault();panX=0;panY=0;setZoom(1);}
+    const delta = { ArrowLeft:[40,0], ArrowRight:[-40,0], ArrowUp:[0,40], ArrowDown:[0,-40] }[e.key];
+    if (delta) { e.preventDefault(); hideGuidance(); panX += delta[0]; panY += delta[1]; schedule(); }
+    if (e.key === '+' || e.key === '=') { e.preventDefault(); hideGuidance(); setZoom(zoom * 1.5); }
+    if (e.key === '-') { e.preventDefault(); hideGuidance(); setZoom(zoom / 1.5); }
+    if (e.key === 'Home') { e.preventDefault(); hideGuidance(); setZoom(1); }
   });
   let drag;
-  stage.addEventListener('pointerdown',e=>{if((e.pointerType==='touch' && zoom<=1) || e.button!==0)return;drag=[e.clientX,e.clientY,panX,panY];stage.setPointerCapture(e.pointerId);stage.classList.add('dragging');});
-  stage.addEventListener('pointermove',e=>{if(!drag)return;panX=drag[2]+e.clientX-drag[0];panY=drag[3]+e.clientY-drag[1];schedule();});
-  const stop = ()=>{drag=null;stage.classList.remove('dragging');};
-  stage.addEventListener('pointerup',stop);stage.addEventListener('pointercancel',stop);
+  stage.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'touch' || e.button !== 0) return;
+    hideGuidance();
+    drag = [e.clientX, e.clientY, panX, panY];
+    stage.setPointerCapture(e.pointerId);
+    stage.classList.add('dragging');
+  });
+  stage.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'touch') pointerMoved = true;
+    if (!drag) return;
+    panX = drag[2] + e.clientX - drag[0]; panY = drag[3] + e.clientY - drag[1]; schedule();
+  });
+  stage.addEventListener('pointerleave', () => { pointerMoved = false; });
+  const stop = () => { drag = null; stage.classList.remove('dragging'); };
+  stage.addEventListener('pointerup', stop); stage.addEventListener('pointercancel', stop);
+  let pinch;
+  const touchPair = touches => {
+    const [a, b] = touches;
+    return { distance: Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY), x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 };
+  };
+  stage.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault(); hideGuidance();
+      const pair = touchPair(e.touches);
+      pinch = { ...pair, zoom };
+      drag = null;
+    } else if (e.touches.length === 1 && zoom > 1) {
+      hideGuidance();
+      drag = [e.touches[0].clientX, e.touches[0].clientY, panX, panY];
+    }
+  }, { passive: false });
+  stage.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && pinch) {
+      e.preventDefault();
+      const pair = touchPair(e.touches);
+      if (pinch.distance > 0) setZoom(pinch.zoom * pair.distance / pinch.distance, anchorAt(pair.x, pair.y));
+      if (zoom > 1) { panX += pair.x - pinch.x; panY += pair.y - pinch.y; }
+      pinch.x = pair.x; pinch.y = pair.y;
+      schedule();
+    } else if (e.touches.length === 1 && drag && zoom > 1) {
+      e.preventDefault();
+      panX = drag[2] + e.touches[0].clientX - drag[0]; panY = drag[3] + e.touches[0].clientY - drag[1]; schedule();
+    }
+  }, { passive: false });
+  const stopTouch = () => { pinch = null; stop(); };
+  stage.addEventListener('touchend', stopTouch); stage.addEventListener('touchcancel', stopTouch);
   new ResizeObserver(schedule).observe(stage);
   document.querySelector('#map-exclusion').textContent = `${format.format(data.metadata.mappedRecords)} of 101,914 records have usable coordinates. ${format.format(data.metadata.excludedRecords)} records are excluded from this map. The charts below use all borough-assigned reports.`;
   setZoom(1); update();

@@ -7,8 +7,8 @@
   <meta name="description" content="Reported rat sightings across New York City, 2010–2017. Experience the films, explore the map, and compare borough reports.">
   <title>A City of Rats | NYC Sightings, 2010–2017</title>
   <link rel="icon" type="image/svg+xml" href="assets/rat-icon.svg">
-  <link rel="stylesheet" href="styles.css?v=20261015-1">
-  <script type="module" src="app.js?v=20261015-1"></script>
+  <link rel="stylesheet" href="styles.css?v=20261015-2">
+  <script type="module" src="app.js?v=20261015-2"></script>
 </head>
 <body>
   <a class="skip-link" href="#scale">Skip to the visualizations</a>
@@ -37,9 +37,8 @@
           <p class="fine-print">* 2017 ends on September 16.</p><p class="fine-print">A dot is a report, not an individual rat. Overlapping dots can hide repeated reports at the same location.</p><p class="credit">Map study / <a href="https://github.com/daniela111324">Daniela</a></p>
         </aside>
         <div class="map-panel">
-          <div class="map-toolbar"><span id="map-period">2010–2017</span><div role="group" aria-label="Map zoom"><button id="zoom-in" type="button" aria-label="Zoom in">+</button><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="zoom-reset" type="button">Reset view</button></div></div>
-          <div class="map-stage" id="map-stage" tabindex="0" role="group" aria-label="NYC rat report map. Use the zoom buttons, drag to pan, or use arrow keys to pan."><canvas id="report-map" aria-hidden="true"></canvas><svg id="borough-map" aria-hidden="true" viewBox="0 0 900 780"></svg><p id="map-status" role="status">Loading the city’s reports…</p></div>
-          <div class="map-caption"><span><i aria-hidden="true"></i> Reported sighting</span><span>Drag to pan · + / − to zoom</span></div><p class="fine-print" id="map-exclusion"></p>
+          <div class="map-stage" id="map-stage" tabindex="0" role="group" aria-label="NYC rat report map. Use the mouse wheel or plus and minus keys to zoom, drag or arrow keys to pan, and Home to reset."><canvas id="report-map" aria-hidden="true"></canvas><svg id="borough-map" aria-hidden="true" viewBox="0 0 900 780"></svg><p id="map-status" role="status">Loading the city’s reports…</p><div class="map-guidance" aria-hidden="true"><p><span class="mouse-guidance">Zoom in and out through your mouse</span><span class="touch-guidance">Pinch to zoom in and out</span></p></div></div>
+          <div class="map-caption"><span><i aria-hidden="true"></i> Reported sighting</span><span><span class="mouse-guidance">Mouse wheel to zoom · Drag to pan</span><span class="touch-guidance">Pinch to zoom · Drag to pan</span></span></div><p class="fine-print" id="map-exclusion"></p>
         </div>
       </div>
       <details class="map-table"><summary>Analytical Chart / Daniela Martinez</summary><div id="map-data-table" class="table-scroll" tabindex="0" role="region" aria-label="Mapped reports by borough"></div></details>
@@ -51,7 +50,7 @@
       <div id="charts" class="charts"><rat-totals-chart></rat-totals-chart><rat-trend-chart></rat-trend-chart></div><p class="credit">Analytical charts / <a href="https://github.com/chbri89067-dot">Brian Chung</a></p>
     </section>
     <section class="sources chapter" id="sources" aria-labelledby="sources-heading">
-      <p class="eyebrow">Sources &amp; context</p><h2 id="sources-heading">Behind the record.</h2><div class="source-columns"><p>The dataset covers January 1, 2010 through September 16, 2017. Report counts reflect what people reported, along with differences in reporting activity. They do not measure population size or sightings per square mile.</p><div><a href="https://www.kaggle.com/datasets/new-york-city/nyc-rat-sightings">NYC Rat Sightings dataset <span>Kaggle</span></a><a href="https://data.cityofnewyork.us/City-Government/Borough-Boundaries/gthc-hcne">Borough outlines <span>NYC Open Data / DCP</span></a><a href="https://github.com/chbri89067-dot/Design-Sprint-2-site">Website files <span>GitHub</span></a></div></div>
+      <p class="eyebrow">Sources &amp; context</p><h2 id="sources-heading">Behind the record.</h2><div class="source-columns"><p>The dataset covers January 1, 2010 through September 16, 2017. Report counts reflect what people reported, along with differences in reporting activity. They do not measure population size or sightings per square mile.</p><div><a href="https://www.kaggle.com/datasets/new-york-city/nyc-rat-sightings">NYC Rat Sightings dataset <span>Kaggle</span></a><a href="https://data.cityofnewyork.us/City-Government/Borough-Boundaries/gthc-hcne">Borough outlines <span>NYC Open Data / DCP</span></a><a href="https://github.com/chbri89067-dot/Design-Sprint-2-site">Website files <span>GitHub</span></a><!-- Medium post: add the published URL as href and remove aria-disabled when it is ready. --><a class="medium-post" aria-disabled="true">Read our Medium post <span>Coming soon</span></a></div></div>
     </section>
   </main>
   <footer class="page-footer"><span>A City of Rats / NYC, 2010–2017</span><a href="#top">Back to the top ↑</a></footer>
