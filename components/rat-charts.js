@@ -41,10 +41,10 @@ function marker(shape, x, y, color, size = 5) {
 const css = `
   :host { display: block; color: #e9e7e1; font-family: "Segoe UI Light", "Segoe UI", Arial, sans-serif; font-weight: 300; min-width: 0; height: 100%; }
   * { box-sizing: border-box; }
-  figure { margin: 0; padding: 0; background: #080808; border: 0; border-radius: 0; height: 100%; }
+  figure { margin: 0; padding: 28px; background: #080808; border: 1px solid #65655d; border-radius: 0; height: 100%; }
   .chart-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; min-height: 90px; }
   h2 { margin: 0 0 10px; font-size: 28px; font-weight: 300; line-height: 1.35; letter-spacing: -.015em; max-width: 670px; }
-  .subtitle { font-size: 13px; color: #aaa89f; margin: 0; line-height: 1.6; }
+  .subtitle { font-size: 18px; color: #c5c3ba; margin: 0; line-height: 1.6; }
   button { font: inherit; font-size: 12px; color: #e9e7e1; background: #080808; border: 1px solid #8e8d83; padding: 10px 12px; border-radius: 0; cursor: pointer; min-height: 44px; white-space: nowrap; }
   button:hover { background: #242422; }
   button:focus-visible, summary:focus-visible { outline: 3px solid #e9e7e1; outline-offset: 3px; }
@@ -61,7 +61,7 @@ const css = `
   .legend { display: flex; gap: 10px 18px; flex-wrap: wrap; margin: 0 0 12px; padding: 0; list-style: none; }
   .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; }
   .legend svg { width: 46px; height: 18px; flex: none; }
-  .note { font-size: 12px; line-height: 1.6; color: #aaa89f; margin: 12px 0; }
+  .note { font-size: 16px; line-height: 1.65; color: #c5c3ba; margin: 12px 0; }
   details { margin-top: 18px; border-top: 1px solid #393936; padding-top: 12px; }
   summary { font-size: 13px; font-weight: 650; cursor: pointer; padding: 8px 0; min-height: 44px; }
   .table-wrap { overflow: auto; margin-top: 10px; }
@@ -73,7 +73,7 @@ const css = `
   tfoot th, tfoot td { border-top: 2px solid #8e8d83; font-weight: 700; }
   .empty { padding: 80px 20px; text-align: center; line-height: 1.6; }
   .error { border: 1px solid #b9b7ab; color: #e9e7e1; padding: 16px; }
-  @media (max-width: 600px) { figure { padding: 0; } h2 { font-size: 23px; } .chart-heading { display: block; min-height: 0; margin-bottom: 16px; } button { margin-top: 12px; } }
+  @media (max-width: 600px) { figure { padding: 16px 12px; } .subtitle { font-size: 17px; } h2 { font-size: 23px; } .chart-heading { display: block; min-height: 0; margin-bottom: 16px; } button { margin-top: 12px; } }
   @media (forced-colors: active) { .bar { stroke: CanvasText; fill: CanvasText; } .series { stroke: CanvasText; fill: none; } .point .halo { fill: transparent; } }
   @media print { button { display: none; } figure { border: 1px solid #8e8d83; } }
 `;

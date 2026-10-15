@@ -433,12 +433,15 @@ thead th {
 .scale-chapter {
   padding-bottom:60px;
 }
+.scale-chapter>.chapter-heading {
+  margin-bottom:20px;
+}
 .scale-note {
   max-width:720px;
-  color:var(--muted);
-  font-size:13px;
+  color:#bdbbb3;
+  font-size:18px;
   line-height:1.7;
-  margin:0 0 70px 26%;
+  margin:0 0 48px 26%;
 }
 .film-track {
   height:230vh;
@@ -471,21 +474,6 @@ thead th {
   font-weight:300;
   letter-spacing:-1.5px;
   margin:0;
-}
-.film-heading>p {
-  margin:0;
-  text-align:right;
-}
-.film-heading strong {
-  display:block;
-  font-size:32px;
-  font-weight:300;
-}
-.film-heading>p>span {
-  display:block;
-  font:9px var(--mono);
-  letter-spacing:1px;
-  color:var(--muted);
 }
 .film-sticky video {
   display:block;
@@ -561,9 +549,6 @@ thead th {
   font:10px/1.8 var(--mono);
   color:var(--muted);
   text-align:right;
-}
-.sources>.fine-print {
-  max-width:830px;
 }
 .page-footer {
   display:flex;
@@ -735,7 +720,7 @@ thead th {
   }
   .scale-note {
     margin:0 0 40px;
-    font-size:12px;
+    font-size:17px;
   }
   .film-heading {
     gap:12px;
@@ -743,17 +728,9 @@ thead th {
   .film-heading h3 {
     font-size:34px;
   }
-  .film-heading strong {
-    font-size:24px;
-  }
   .film-heading .eyebrow {
     font-size:8px;
     letter-spacing:1.4px;
-  }
-  .film-heading>p>span {
-    font-size:8px;
-    max-width:110px;
-    line-height:1.6;
   }
   .film-sticky {
     padding-top:28px;
@@ -901,16 +878,16 @@ thead th {
 .scroll-prompt {
   position:absolute;
   left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
+  bottom:28px;
+  transform:translateX(-50%);
   display:flex;
   align-items:center;
   justify-content:center;
   gap:20px;
   width:max-content;
   max-width:calc(100% - 44px);
-  min-height:70px;
-  padding:20px 24px;
+  min-height:36px;
+  padding:0 24px;
   font:20px/1.5 var(--mono);
   text-transform:uppercase;
   letter-spacing:3px;
@@ -956,10 +933,14 @@ thead th {
   .hero-copy { max-width:100%; }
   .hero h1 { font-size:clamp(66px,18vw,82px); letter-spacing:-2px; margin-bottom:24px; }
   .hero-description { font-size:16px; max-width:290px; }
-  .scroll-prompt { font-size:16px; letter-spacing:2px; gap:12px; padding:18px 12px; }
-  .scroll-line { width:18px; min-width:12px; }
-  .motion-toggle { right:22px; bottom:24px; font-size:9px; padding:0 10px; }
+  .scroll-prompt { bottom:24px; font-size:12px; letter-spacing:1px; gap:0; padding:0; }
+  .scroll-line { display:none; }
+  .motion-toggle { right:22px; bottom:24px; font-size:9px; padding:0 8px; }
   .rat-runway { bottom:90px; }
+}
+@media(max-width:360px) {
+  .scroll-prompt { font-size:10px; letter-spacing:.7px; }
+  .motion-toggle { right:16px; font-size:8px; padding:0 6px; }
 }
 @media print {
   .hero { height:auto; min-height:0; padding:30px; }
