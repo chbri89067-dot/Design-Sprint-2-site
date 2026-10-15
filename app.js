@@ -18,16 +18,6 @@ const reveals = new IntersectionObserver(entries => entries.forEach(entry => {
 }), { threshold: .12 });
 document.querySelectorAll('.reveal').forEach(element => reveals.observe(element));
 
-const navigation = [...document.querySelectorAll('.masthead nav a')];
-const chapters = new IntersectionObserver(entries => entries.forEach(entry => {
-  if (!entry.isIntersecting) return;
-  navigation.forEach(link => {
-    if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current', 'location');
-    else link.removeAttribute('aria-current');
-  });
-}), { rootMargin: '-10% 0px -65% 0px' });
-document.querySelectorAll('#home, #map, #counts, #scale').forEach(element => chapters.observe(element));
-
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const motionButton = document.querySelector('.motion-toggle');
 const rat = document.querySelector('.running-rat');
