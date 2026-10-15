@@ -7,8 +7,8 @@
   <meta name="description" content="Reported rat sightings across New York City, 2010–2017. Experience the films, explore the map, and compare borough reports.">
   <title>A City of Rats | NYC Sightings, 2010–2017</title>
   <link rel="icon" type="image/svg+xml" href="assets/rat-icon.svg">
-  <link rel="stylesheet" href="styles.css?v=20261015-2">
-  <script type="module" src="app.js?v=20261015-2"></script>
+  <link rel="stylesheet" href="styles.css?v=20261015-3">
+  <script type="module" src="app.js?v=20261015-3"></script>
 </head>
 <body>
   <a class="skip-link" href="#scale">Skip to the visualizations</a>
@@ -20,11 +20,11 @@
       <div class="hero-bottom"><a class="scroll-prompt" href="#scale"><span class="scroll-line" aria-hidden="true"></span>Scroll to explore<span class="scroll-line" aria-hidden="true"></span></a><button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button></div>
     </section>
     <section class="chapter scale-chapter" id="scale" aria-labelledby="scale-heading">
-      <div class="chapter-heading reveal"><p class="eyebrow">01 / Scale</p><div><h2 id="scale-heading">Let the record fall.</h2><p>Lubudde’s three visual simulations turn reports into falling rats. Scroll through each borough to move the film forward, or use its playback controls.</p></div></div>
+      <div class="chapter-heading reveal"><p class="eyebrow">01 / Scale</p><div><h2 id="scale-heading">Let the record fall.</h2><p>Lucy Budde’s three visual simulations turn reports into falling rats. Use each video’s playback controls to watch the study.</p></div></div>
       <p class="scale-note">Each falling rat represents a formal report in the visual study. The films cover the Bronx, Staten Island, and Queens. They illustrate reported sightings, not a measured rat population.</p>
-      <article class="film-track" id="bronx-film" data-video="bronx-video"><div class="film-sticky"><div class="film-heading"><div><p class="eyebrow">Study 01 / Bronx</p><h3>The Bronx</h3></div></div><video id="bronx-video" src="Rats/media/bronx.mp4" muted playsinline preload="metadata" controls aria-label="Bronx falling-rat simulation"></video><div class="film-footer"><span>Scroll to advance the film</span><progress value="0" max="1" aria-label="Bronx film progress"></progress></div></div></article>
-      <article class="film-track" id="staten-film" data-video="staten-video"><div class="film-sticky"><div class="film-heading"><div><p class="eyebrow">Study 02 / Staten Island</p><h3>Staten Island</h3></div></div><video id="staten-video" src="Rats/media/staten_island.mp4" muted playsinline preload="metadata" controls aria-label="Staten Island falling-rat simulation"></video><div class="film-footer"><span>Scroll to advance the film</span><progress value="0" max="1" aria-label="Staten Island film progress"></progress></div></div></article>
-      <article class="film-track" id="queens-film" data-video="queens-video"><div class="film-sticky"><div class="film-heading"><div><p class="eyebrow">Study 03 / Queens</p><h3>Queens</h3></div></div><video id="queens-video" src="Rats/media/queens.mp4" muted playsinline preload="metadata" controls aria-label="Queens falling-rat simulation"></video><div class="film-footer"><span>Scroll to advance the film</span><progress value="0" max="1" aria-label="Queens film progress"></progress></div></div></article>
+      <article class="film-study" id="bronx-film"><div class="film-content"><div class="film-heading"><div><p class="eyebrow">Study 01 / Bronx</p><h3>The Bronx</h3></div></div><video id="bronx-video" src="Rats/media/bronx.mp4" muted playsinline preload="metadata" controls aria-label="Bronx falling-rat simulation"></video><p class="credit">Persuasive Visualization / <a href="https://github.com/lubudde">Lucy Budde</a></p></div></article>
+      <article class="film-study" id="staten-film"><div class="film-content"><div class="film-heading"><div><p class="eyebrow">Study 02 / Staten Island</p><h3>Staten Island</h3></div></div><video id="staten-video" src="Rats/media/staten_island.mp4" muted playsinline preload="metadata" controls aria-label="Staten Island falling-rat simulation"></video><p class="credit">Persuasive Visualization / <a href="https://github.com/lubudde">Lucy Budde</a></p></div></article>
+      <article class="film-study" id="queens-film"><div class="film-content"><div class="film-heading"><div><p class="eyebrow">Study 03 / Queens</p><h3>Queens</h3></div></div><video id="queens-video" src="Rats/media/queens.mp4" muted playsinline preload="metadata" controls aria-label="Queens falling-rat simulation"></video><p class="credit">Persuasive Visualization / <a href="https://github.com/lubudde">Lucy Budde</a></p></div></article>
     </section>
     <section class="chapter map-chapter" id="map" aria-labelledby="map-heading">
       <div class="chapter-heading reveal"><p class="eyebrow">02 / Locations</p><div><h2 id="map-heading">Where the reports land.</h2><p>One dot for each report with usable coordinates. Choose a year to see how the record of sightings spreads across the city.</p></div></div>
@@ -33,12 +33,10 @@
           <p class="control-label" id="year-label">Choose a year</p>
           <div class="year-controls" role="group" aria-labelledby="year-label"><button type="button" data-year="all" aria-pressed="true">All years</button><button type="button" data-year="2010" aria-pressed="false">2010</button><button type="button" data-year="2011" aria-pressed="false">2011</button><button type="button" data-year="2012" aria-pressed="false">2012</button><button type="button" data-year="2013" aria-pressed="false">2013</button><button type="button" data-year="2014" aria-pressed="false">2014</button><button type="button" data-year="2015" aria-pressed="false">2015</button><button type="button" data-year="2016" aria-pressed="false">2016</button><button type="button" data-year="2017" aria-pressed="false">2017*</button></div>
           <label class="outline-control"><input id="outlines" type="checkbox" checked> Borough outlines &amp; names</label>
-          <div class="map-count" role="status" aria-live="polite" aria-atomic="true"><strong id="map-count">…</strong><span id="map-count-label">Loading mapped reports</span></div>
-          <p class="fine-print">* 2017 ends on September 16.</p><p class="fine-print">A dot is a report, not an individual rat. Overlapping dots can hide repeated reports at the same location.</p><p class="credit">Map study / <a href="https://github.com/daniela111324">Daniela</a></p>
+          <p class="fine-print">A dot is a report, not an individual rat. Overlapping dots can hide repeated reports at the same location.</p>
         </aside>
         <div class="map-panel">
           <div class="map-stage" id="map-stage" tabindex="0" role="group" aria-label="NYC rat report map. Use the mouse wheel or plus and minus keys to zoom, drag or arrow keys to pan, and Home to reset."><canvas id="report-map" aria-hidden="true"></canvas><svg id="borough-map" aria-hidden="true" viewBox="0 0 900 780"></svg><p id="map-status" role="status">Loading the city’s reports…</p><div class="map-guidance" aria-hidden="true"><p><span class="mouse-guidance">Zoom in and out through your mouse</span><span class="touch-guidance">Pinch to zoom in and out</span></p></div></div>
-          <div class="map-caption"><span><i aria-hidden="true"></i> Reported sighting</span><span><span class="mouse-guidance">Mouse wheel to zoom · Drag to pan</span><span class="touch-guidance">Pinch to zoom · Drag to pan</span></span></div><p class="fine-print" id="map-exclusion"></p>
         </div>
       </div>
       <details class="map-table"><summary>Analytical Chart / Daniela Martinez</summary><div id="map-data-table" class="table-scroll" tabindex="0" role="region" aria-label="Mapped reports by borough"></div></details>

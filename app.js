@@ -1,5 +1,5 @@
-import './components/rat-charts.js?v=20261015-2';
-import { initMap } from './components/report-map.js?v=20261015-2';
+import './components/rat-charts.js?v=20261015-3';
+import { initMap } from './components/report-map.js?v=20261015-3';
 
 const charts = [...document.querySelectorAll('rat-totals-chart, rat-trend-chart')];
 const controls = [...document.querySelectorAll('.filters input')];
@@ -32,7 +32,6 @@ function updateMotion() {
   motionButton.setAttribute('aria-pressed', String(motionPaused()));
   motionButton.disabled = reduced.matches;
   updateRat();
-  if (motionPaused()) document.querySelectorAll('video').forEach(video => video.pause());
 }
 motionButton.addEventListener('click', () => { manuallyPaused = !manuallyPaused; updateMotion(); });
 fetch(new URL('./assets/rat-running.svg', import.meta.url)).then(response => {
@@ -47,41 +46,8 @@ fetch(new URL('./assets/rat-running.svg', import.meta.url)).then(response => {
 reduced.addEventListener('change', updateMotion);
 updateMotion();
 
-// Seek only after scrolling, and only for visible films. Native playback stays usable.
-const films = [...document.querySelectorAll('.film-track')].map(track => ({
-  track, video: document.getElementById(track.dataset.video), progress: track.querySelector('progress'),
-  pendingTarget: null,
-}));
-let frame = 0;
-function scrubFilms() {
-  frame = 0;
-  if (motionPaused()) return;
-  for (const film of films) {
-    const { track, video, progress } = film;
-    const rect = track.getBoundingClientRect();
-    if (rect.bottom < 0 || rect.top > innerHeight || !Number.isFinite(video.duration) || !video.paused) continue;
-    const distance = rect.height - innerHeight;
-    if (distance <= 0) continue;
-    const amount = Math.max(0, Math.min(1, -rect.top / distance));
-    progress.value = amount;
-    const target = amount * Math.max(0, video.duration - .04);
-    if (video.seeking) film.pendingTarget = target;
-    else if (Math.abs(video.currentTime - target) > .08) { film.pendingTarget = null; video.currentTime = target; }
-  }
-}
-function scheduleScrub() { if (!frame) frame = requestAnimationFrame(scrubFilms); }
-window.addEventListener('scroll', scheduleScrub, { passive: true });
-window.addEventListener('resize', scheduleScrub, { passive: true });
-films.forEach(film => {
-  const { video, progress } = film;
-  video.addEventListener('loadedmetadata', scheduleScrub);
-  video.addEventListener('seeked', () => {
-    const target = film.pendingTarget;
-    film.pendingTarget = null;
-    if (target !== null && video.paused && !motionPaused() && Math.abs(video.currentTime - target) > .08) video.currentTime = target;
-  });
-  video.addEventListener('play', () => { film.pendingTarget = null; });
-  video.addEventListener('timeupdate', () => { if (!video.paused && video.duration) progress.value = video.currentTime / video.duration; });
+// Films use their native controls; page scrolling never changes playback.
+document.querySelectorAll('video').forEach(video => {
   video.addEventListener('error', () => {
     const message = document.createElement('p');
     message.className = 'fine-print';

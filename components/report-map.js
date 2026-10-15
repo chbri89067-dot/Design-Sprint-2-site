@@ -22,8 +22,6 @@ export async function initMap() {
   } catch {
     status.textContent = 'The map could not load. Refresh the page or view the source dataset linked in Sources.';
     [...buttons, outlines].forEach(b => b.disabled = true);
-    document.querySelector('#map-count').textContent = 'Unavailable';
-    document.querySelector('#map-count-label').textContent = 'Map data could not load';
     return;
   }
   status.hidden = true;
@@ -75,8 +73,6 @@ export async function initMap() {
     const total = Object.values(counts).reduce((a,b)=>a+b,0);
     const period = year === 'all' ? '2010–2017' : year === '2017' ? '2017 · through Sep 16' : year;
     buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.year === year)));
-    document.querySelector('#map-count').textContent = format.format(total);
-    document.querySelector('#map-count-label').textContent = `mapped reports / ${period}`;
     stage.setAttribute('aria-label', `NYC map, ${format.format(total)} reports, ${period}. Use the mouse wheel or plus and minus keys to zoom. Drag or use arrow keys to pan. Press Home to reset. Counts are in the data table below.`);
     document.querySelector('#map-data-table').innerHTML = `<table><caption>Mapped reports, ${period}. Counts exclude unusable or missing coordinates.</caption><thead><tr><th scope="col">Borough</th><th scope="col">Mapped reports</th></tr></thead><tbody>${data.boroughs.map(b=>`<tr><th scope="row">${b}</th><td>${format.format(counts[b] || 0)}</td></tr>`).join('')}</tbody><tfoot><tr><th scope="row">Total</th><td>${format.format(total)}</td></tr></tfoot></table>`;
     schedule();
@@ -180,6 +176,5 @@ export async function initMap() {
   const stopTouch = () => { pinch = null; stop(); };
   stage.addEventListener('touchend', stopTouch); stage.addEventListener('touchcancel', stopTouch);
   new ResizeObserver(schedule).observe(stage);
-  document.querySelector('#map-exclusion').textContent = `${format.format(data.metadata.mappedRecords)} of 101,914 records have usable coordinates. ${format.format(data.metadata.excludedRecords)} records are excluded from this map. The charts below use all borough-assigned reports.`;
   setZoom(1); update();
 }
