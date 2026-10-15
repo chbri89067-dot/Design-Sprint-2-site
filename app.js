@@ -1,4 +1,4 @@
-import './components/rat-charts.js';
+import './components/rat-charts.js?v=20261014-2';
 import { initMap } from './components/report-map.js';
 
 const charts = [...document.querySelectorAll('rat-totals-chart, rat-trend-chart')];
