@@ -20,11 +20,14 @@ document.querySelectorAll('.reveal').forEach(element => reveals.observe(element)
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const motionButton = document.querySelector('.motion-toggle');
-const rat = document.querySelector('.running-rat');
+const ratArt = [
+  { host: document.querySelector('.running-rat'), path: './assets/rat-running.svg' },
+  { host: document.querySelector('.hero-rat-face'), path: './assets/rat-face.svg' },
+].filter(({ host }) => host);
 let manuallyPaused = false;
 const motionPaused = () => manuallyPaused || reduced.matches;
 function updateRat() {
-  rat.querySelector('svg')?.classList.toggle('paused', motionPaused());
+  ratArt.forEach(({ host }) => host.querySelector('svg')?.classList.toggle('paused', motionPaused()));
 }
 function updateMotion() {
   document.body.classList.toggle('motion-paused', motionPaused());
@@ -34,15 +37,17 @@ function updateMotion() {
   updateRat();
 }
 motionButton.addEventListener('click', () => { manuallyPaused = !manuallyPaused; updateMotion(); });
-fetch(new URL('./assets/rat-running.svg', import.meta.url)).then(response => {
-  if (!response.ok) throw Error('Rat asset unavailable');
-  return response.text();
-}).then(source => {
-  const svg = new DOMParser().parseFromString(source, 'image/svg+xml').documentElement;
-  svg.setAttribute('aria-hidden', 'true');
-  rat.append(document.importNode(svg, true));
-  updateRat();
-}).catch(() => { rat.hidden = true; });
+ratArt.forEach(({ host, path }) => {
+  fetch(new URL(path, import.meta.url)).then(response => {
+    if (!response.ok) throw Error('Rat asset unavailable');
+    return response.text();
+  }).then(source => {
+    const svg = new DOMParser().parseFromString(source, 'image/svg+xml').documentElement;
+    svg.setAttribute('aria-hidden', 'true');
+    host.append(document.importNode(svg, true));
+    updateRat();
+  }).catch(() => { host.hidden = true; });
+});
 reduced.addEventListener('change', updateMotion);
 updateMotion();
 

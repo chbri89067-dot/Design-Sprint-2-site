@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" role="img" aria-labelledby="rat-face-title">
+  <title id="rat-face-title">Rat face with gently moving whiskers, inspired by the supplied rat silhouette</title>
+  <style>
+    .whiskers { fill:none; stroke:#b7b5aa; stroke-width:2.7; stroke-linecap:round; }
+    .whiskers-left { transform-origin:322px 316px; animation:whisk-left 2.8s ease-in-out infinite; }
+    .whiskers-right { transform-origin:398px 316px; animation:whisk-right 3.2s ease-in-out -.7s infinite; }
+    .paused * { animation-play-state:paused!important; }
+    @keyframes whisk-left { 0%,100% { transform:rotate(-3deg); } 50% { transform:rotate(4deg); } }
+    @keyframes whisk-right { 0%,100% { transform:rotate(3deg); } 50% { transform:rotate(-4deg); } }
+    @media(prefers-reduced-motion:reduce) { * { animation:none!important; } }
+  </style>
+  <defs>
+    <path id="face-ear" d="M259 109C267 65 250 22 213 17C171 10 136 40 135 81C133 121 163 153 209 162Z"/>
+    <path id="face-ear-inner" d="M237 112C245 79 233 43 209 40C181 37 158 58 158 84C158 110 178 133 210 138Z"/>
+  </defs>
+  <g fill="#b6b4aa" stroke="#151513" stroke-width="3" stroke-linejoin="round">
+    <use href="#face-ear"/>
+    <use href="#face-ear" transform="translate(720 0) scale(-1 1)"/>
+  </g>
+  <g fill="#484842">
+    <use href="#face-ear-inner"/>
+    <use href="#face-ear-inner" transform="translate(720 0) scale(-1 1)"/>
+  </g>
+  <path fill="#c7c5bb" stroke="#151513" stroke-width="3" stroke-linejoin="round" d="M236 111C259 74 308 60 350 67L360 58L370 67C414 60 461 74 484 111L499 143L512 151L507 162C532 201 516 249 486 287L470 297L462 315L415 369C396 391 377 407 360 410C343 407 324 391 305 369L258 315L250 297L234 287C204 249 188 201 213 162L208 151L221 143Z"/>
+  <g fill="none" stroke="#77766f" stroke-width="2" stroke-linecap="round">
+    <path d="M307 110Q335 92 347 92M413 110Q385 92 373 92"/>
+    <path d="M231 224L243 232M237 245L252 252M489 224L477 232M483 245L468 252"/>
+    <path d="M289 224Q307 240 312 257M431 224Q413 240 408 257"/>
+  </g>
+  <g fill="#111110">
+    <ellipse cx="276" cy="190" rx="16" ry="21" transform="rotate(-17 276 190)"/>
+    <ellipse cx="444" cy="190" rx="16" ry="21" transform="rotate(17 444 190)"/>
+  </g>
+  <g fill="#efede5"><circle cx="271" cy="183" r="4"/><circle cx="439" cy="183" r="4"/></g>
+  <path fill="#dedcd3" d="M299 269C318 257 342 278 360 311C378 278 402 257 421 269L412 313C398 340 381 361 360 364C339 361 322 340 308 313Z"/>
+  <g fill="#77766f"><circle cx="321" cy="303" r="2"/><circle cx="310" cy="312" r="2"/><circle cx="326" cy="320" r="2"/><circle cx="399" cy="303" r="2"/><circle cx="410" cy="312" r="2"/><circle cx="394" cy="320" r="2"/></g>
+  <g class="whiskers whiskers-left"><path d="M322 304Q211 256 60 257"/><path d="M320 316Q174 300 30 329"/><path d="M324 327Q185 339 64 385"/></g>
+  <g class="whiskers whiskers-right"><path d="M398 304Q509 256 660 257"/><path d="M400 316Q546 300 690 329"/><path d="M396 327Q535 339 656 385"/></g>
+  <path fill="#171715" d="M340 320C343 307 377 307 380 320Q377 333 360 339Q343 333 340 320Z"/>
+  <path d="M360 339V353M360 353Q354 361 347 360M360 353Q366 361 373 360" fill="none" stroke="#4b4b45" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
