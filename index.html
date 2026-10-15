@@ -7,8 +7,8 @@
   <meta name="description" content="Reported rat sightings across New York City, 2010–2017. Experience the films, explore the map, and compare borough reports.">
   <title>A City of Rats | NYC Sightings, 2010–2017</title>
   <link rel="icon" type="image/svg+xml" href="assets/rat-icon.svg">
-  <link rel="stylesheet" href="styles.css?v=20261014-2">
-  <script type="module" src="app.js?v=20261014-2"></script>
+  <link rel="stylesheet" href="styles.css?v=20261015-1">
+  <script type="module" src="app.js?v=20261015-1"></script>
 </head>
 <body>
   <a class="skip-link" href="#scale">Skip to the visualizations</a>
@@ -42,11 +42,11 @@
           <div class="map-caption"><span><i aria-hidden="true"></i> Reported sighting</span><span>Drag to pan · + / − to zoom</span></div><p class="fine-print" id="map-exclusion"></p>
         </div>
       </div>
-      <details class="map-table"><summary>Read mapped counts by borough</summary><div id="map-data-table" class="table-scroll" tabindex="0" role="region" aria-label="Mapped reports by borough"></div></details>
+      <details class="map-table"><summary>Analytical Chart / Daniela Martinez</summary><div id="map-data-table" class="table-scroll" tabindex="0" role="region" aria-label="Mapped reports by borough"></div></details>
     </section>
     <section class="chapter" id="counts" aria-labelledby="counts-heading">
       <div class="chapter-heading reveal"><p class="eyebrow">03 / Comparisons</p><div><h2 id="counts-heading">Five boroughs.<br>Different patterns.</h2><p>Compare the full recorded period, then trace the changes year by year. Use the borough filters to narrow both charts.</p></div></div>
-      <div class="coverage-note"><span>Reading the data</span><p>These charts include 101,913 reports assigned to a borough. One report has an unspecified borough. 2017 is a partial year, so its count cannot show a full-year decline.</p></div>
+      <div class="coverage-note"><span>Reading the data</span><p>These charts include 101,913 reports assigned to a borough. One report has an unspecified borough. <strong>2017 is a partial year</strong>, so its count cannot show a full-year decline.</p></div>
       <fieldset class="filters"><legend>Show boroughs</legend><div class="filter-options"><label><input type="checkbox" value="Bronx" checked> Bronx</label><label><input type="checkbox" value="Brooklyn" checked> Brooklyn</label><label><input type="checkbox" value="Manhattan" checked> Manhattan</label><label><input type="checkbox" value="Queens" checked> Queens</label><label><input type="checkbox" value="Staten Island" checked> Staten Island</label></div></fieldset>
       <div id="charts" class="charts"><rat-totals-chart></rat-totals-chart><rat-trend-chart></rat-trend-chart></div><p class="credit">Analytical charts / <a href="https://github.com/chbri89067-dot">Brian Chung</a></p>
     </section>

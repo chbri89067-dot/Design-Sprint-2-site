@@ -48,9 +48,12 @@ const css = `
   button { font: inherit; font-size: 12px; color: #e9e7e1; background: #080808; border: 1px solid #8e8d83; padding: 10px 12px; border-radius: 0; cursor: pointer; min-height: 44px; white-space: nowrap; }
   button:hover { background: #242422; }
   button:focus-visible, summary:focus-visible { outline: 3px solid #e9e7e1; outline-offset: 3px; }
-  .plot { width: 100%; min-height: 350px; }
+  .plot { width: 100%; min-height: 400px; overflow-x: auto; overflow-y: hidden; }
+  .plot > svg { min-width: 660px; }
+  .chart-scroll-hint { display: none; font-size: 14px; color: #c5c3ba; margin: 0 0 12px; }
+  .readout.sr-only { position: absolute; width: 1px; height: 1px; min-height: 0; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
   svg { display: block; width: 100%; overflow: visible; }
-  svg text { font-family: inherit; fill: #c5c3ba; }
+  svg text { font-family: inherit; fill: #d7d5cc; }
   .datum { cursor: default; }
   .datum:focus { outline: none; }
   .bar:focus { stroke: #e9e7e1; stroke-width: 4px; }
@@ -59,8 +62,9 @@ const css = `
   .point:hover .halo { stroke: #8e8d83; stroke-width: 1px; }
   .readout { min-height: 44px; margin: 12px 0; padding: 10px 12px; border: 1px solid #393936; border-radius: 0; font-size: 13px; color: #c5c3ba; background: #111110; line-height: 1.5; }
   .legend { display: flex; gap: 10px 18px; flex-wrap: wrap; margin: 0 0 12px; padding: 0; list-style: none; }
-  .legend li { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .legend li { display: flex; align-items: center; gap: 10px; font-size: 16px; line-height: 1.6; }
   .legend svg { width: 46px; height: 18px; flex: none; }
+  .note strong { font-family: "Segoe UI", Arial, sans-serif; font-weight: 600; color: #e9e7e1; }
   .note { font-size: 16px; line-height: 1.65; color: #c5c3ba; margin: 12px 0; }
   details { margin-top: 18px; border-top: 1px solid #393936; padding-top: 12px; }
   summary { font-size: 13px; font-weight: 650; cursor: pointer; padding: 8px 0; min-height: 44px; }
@@ -73,6 +77,7 @@ const css = `
   tfoot th, tfoot td { border-top: 2px solid #8e8d83; font-weight: 700; }
   .empty { padding: 80px 20px; text-align: center; line-height: 1.6; }
   .error { border: 1px solid #b9b7ab; color: #e9e7e1; padding: 16px; }
+  @media (max-width: 760px) { .chart-scroll-hint { display: block; } }
   @media (max-width: 600px) { figure { padding: 16px 12px; } .subtitle { font-size: 17px; } h2 { font-size: 23px; } .chart-heading { display: block; min-height: 0; margin-bottom: 16px; } button { margin-top: 12px; } }
   @media (forced-colors: active) { .bar { stroke: CanvasText; fill: CanvasText; } .series { stroke: CanvasText; fill: none; } .point .halo { fill: transparent; } }
   @media print { button { display: none; } figure { border: 1px solid #8e8d83; } }
@@ -133,10 +138,11 @@ class RatChart extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${css}</style>
       <figure aria-labelledby="${this._id}-heading">
         <div class="chart-heading"><div><h2 id="${this._id}-heading">${escape(this.heading)}</h2><p class="subtitle">${escape(this.subtitle)}</p></div><button type="button" aria-label="Download ${this.kind === 'totals' ? 'borough totals' : 'annual trend'} chart as SVG">Save SVG</button></div>
-        <div class="plot"></div>
+        <p class="chart-scroll-hint">On smaller screens, swipe across the chart to see every label.</p>
+        <div class="plot" tabindex="0" role="region" aria-label="Scrollable ${this.kind === 'totals' ? 'borough totals' : 'annual trend'} chart"></div>
         ${this.kind === 'trend' ? this._legend() : ''}
-        <p class="readout" role="status" aria-live="polite" aria-atomic="true">Focus or hover over a ${this.kind === 'totals' ? 'bar' : 'marker'} to read its exact count.</p>
-        <p class="note">2017 includes reports through September 16, so it is a partial year. Reports with an unspecified borough are excluded.</p>
+        <p class="readout ${this.kind === 'totals' ? 'sr-only' : ''}" role="status" aria-live="polite" aria-atomic="true">Focus or hover over a ${this.kind === 'totals' ? 'bar' : 'marker'} to read its exact count.</p>
+        <p class="note"><strong>2017 is a partial year</strong>, with reports through September 16. Reports with an unspecified borough are excluded.</p>
         <details ${open ? 'open' : ''}><summary>View the data table</summary><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable ${this.kind === 'totals' ? 'borough totals' : 'annual counts'} table">${this._table()}</div></details>
       </figure>`;
     const plot = this.shadowRoot.querySelector('.plot');
@@ -165,9 +171,9 @@ class RatChart extends HTMLElement {
     const y = value => bottom - value / maximum * (bottom - margins.top);
     let svg = '';
     for (let value = 0; value <= maximum; value += step) {
-      svg += `<line x1="${margins.left}" x2="${width-margins.right}" y1="${y(value)}" y2="${y(value)}" stroke="${value === 0 ? '#8e8d83' : '#30302d'}"/><text x="${margins.left-9}" y="${y(value)+4}" text-anchor="end" font-size="12">${value === 0 ? '0' : `${value/1000}k`}</text>`;
+      svg += `<line x1="${margins.left}" x2="${width-margins.right}" y1="${y(value)}" y2="${y(value)}" stroke="${value === 0 ? '#8e8d83' : '#30302d'}"/><text x="${margins.left-9}" y="${y(value)+4}" text-anchor="end" font-size="15">${value === 0 ? '0' : `${value/1000}k`}</text>`;
     }
-    svg += `<text transform="translate(14 ${(margins.top+bottom)/2}) rotate(-90)" text-anchor="middle" font-size="12">Reported rat sightings</text><text x="${(margins.left+width-margins.right)/2}" y="${height-4}" text-anchor="middle" font-size="12">${xLabel}</text>`;
+    svg += `<text transform="translate(18 ${(margins.top+bottom)/2}) rotate(-90)" text-anchor="middle" font-size="16">Reported rat sightings</text><text x="${(margins.left+width-margins.right)/2}" y="${height-7}" text-anchor="middle" font-size="16">${xLabel}</text>`;
     return { svg, y, bottom };
   }
   _draw() {
@@ -177,7 +183,7 @@ class RatChart extends HTMLElement {
       plot.innerHTML = '<p class="empty">Select at least one borough to display the chart.</p>';
       return;
     }
-    const width = Math.max(280, Math.round(plot.getBoundingClientRect().width));
+    const width = Math.max(660, Math.round(plot.getBoundingClientRect().width));
     plot.innerHTML = this.kind === 'totals' ? this._bars(width) : this._lines(width);
     plot.querySelectorAll('.datum').forEach(element => {
       const announce = () => {
@@ -200,8 +206,8 @@ class RatChart extends HTMLElement {
     });
   }
   _bars(width) {
-    const height = 360;
-    const margins = { left: 57, right: 14, top: 28, bottom: 59 };
+    const height = 400;
+    const margins = { left: 78, right: 24, top: 36, bottom: 78 };
     const axis = this._axes(width, height, margins, 40000, 10000, 'Borough');
     let svg = this._svgStart(width, height, 'Vertical bar chart. Borough on the x-axis and report count on the y-axis starting at zero. Exact counts appear above the bars and in the data table. 2017 is partial.');
     svg += `<g aria-hidden="true">${axis.svg}</g>`;
@@ -214,20 +220,20 @@ class RatChart extends HTMLElement {
         const label = `${item.borough}: ${display(item.total)} reported rat sightings, 2010–2017 (2017 partial).`;
         svg += `<rect class="datum bar" tabindex="0" role="img" aria-label="${escape(label)}" data-borough="${escape(item.borough)}" data-value="${item.total}" x="${x-step*.3}" y="${y}" width="${step*.6}" height="${axis.bottom-y}" rx="0" fill="${style.color}"><title>${escape(label)}</title></rect>`;
       }
-      svg += `<g aria-hidden="true"><text x="${x}" y="${y-9}" text-anchor="middle" font-size="${width < 400 ? 11 : 13}" font-weight="650">${display(item.total)}</text><text x="${x}" y="${axis.bottom+20}" text-anchor="middle" font-size="${width < 400 ? 10 : 12}">${item.borough === 'Staten Island' ? `<tspan x="${x}">Staten</tspan><tspan x="${x}" dy="14">Island</tspan>` : escape(item.borough)}</text></g>`;
+      svg += `<g aria-hidden="true"><text x="${x}" y="${y-9}" text-anchor="middle" font-size="16" font-weight="650">${display(item.total)}</text><text x="${x}" y="${axis.bottom+26}" text-anchor="middle" font-size="15">${item.borough === 'Staten Island' ? `<tspan x="${x}">Staten</tspan><tspan x="${x}" dy="18">Island</tspan>` : escape(item.borough)}</text></g>`;
     }
     return svg + '</svg>';
   }
   _lines(width) {
-    const height = 360;
+    const height = 400;
     const labels = width >= 700;
-    const margins = { left: 48, right: labels ? 122 : 18, top: 28, bottom: 44 };
+    const margins = { left: 72, right: labels ? 160 : 24, top: 52, bottom: 68 };
     const axis = this._axes(width, height, margins, 6000, 1000, 'Year');
     const step = (width - margins.left - margins.right) / 7;
     const x = i => margins.left + step*i;
     let svg = this._svgStart(width, height, 'Line chart with one series per borough. Years 2010–2017 on the x-axis and annual report counts on the y-axis starting at zero. Color, line pattern and marker shape distinguish boroughs. The shaded 2017 region represents a partial year through September 16. Exact counts are available at each marker and in the data table.');
-    svg += `<g aria-hidden="true"><rect x="${x(6)+step/2}" y="${margins.top}" width="${step/2}" height="${axis.bottom-margins.top}" fill="#20201e"/>${axis.svg}`;
-    this._data.years.forEach((year, i) => { svg += `<text x="${x(i)}" y="${axis.bottom+21}" text-anchor="middle" font-size="${width < 400 ? 10 : 12}">${year}${year === 2017 ? '*' : ''}</text>`; });
+    svg += `<g aria-hidden="true"><rect x="${x(6)+step/2}" y="${margins.top}" width="${step/2}" height="${axis.bottom-margins.top}" fill="#444440"/><line x1="${x(6)+step/2}" x2="${x(6)+step/2}" y1="${margins.top}" y2="${axis.bottom}" stroke="#bdbbb3" stroke-width="1.2" stroke-dasharray="4 4"/><text x="${x(7)}" y="24" text-anchor="end" font-size="15" font-weight="600">2017: partial year</text>${axis.svg}`;
+    this._data.years.forEach((year, i) => { svg += `<text x="${x(i)}" y="${axis.bottom+26}" text-anchor="middle" font-size="15">${year}${year === 2017 ? '*' : ''}</text>`; });
     svg += '</g>';
     for (const item of this.items) {
       const style = BOROUGH_STYLES[item.borough];
@@ -245,7 +251,7 @@ class RatChart extends HTMLElement {
         svg += `<g class="datum point" tabindex="0" role="img" aria-label="${escape(label)}" data-borough="${escape(item.borough)}" data-year="${this._data.years[i]}" data-value="${value}"><title>${escape(label)}</title><circle class="halo" cx="${px}" cy="${py}" r="12"/>${marker(style.marker, px, py, style.color)}</g>`;
       });
       const last = item.annual[7];
-      if (labels && last !== null) svg += `<text x="${x(7)+13}" y="${axis.y(last)+4}" font-size="12" aria-hidden="true">${escape(item.borough)}</text>`;
+      if (labels && last !== null) svg += `<text x="${x(7)+13}" y="${axis.y(last)+5}" font-size="16" aria-hidden="true">${escape(item.borough)}</text>`;
     }
     return svg + '</svg>';
   }
@@ -265,16 +271,16 @@ class RatChart extends HTMLElement {
       else titleLines[last] += ` ${word}`;
     }
     const plotTop = 20 + titleLines.length * 25;
-    const legendTop = plotTop + 390;
+    const legendTop = plotTop + 430;
     const height = legendTop + (this.kind === 'trend' ? 78 : 43);
     const plotMarkup = this.kind === 'totals' ? this._bars(width) : this._lines(width);
     const legend = this.kind === 'trend' ? this.items.map((item, i) => {
       const style = BOROUGH_STYLES[item.borough];
       const x = 24 + i * 174;
-      return `<path d="M${x} ${legendTop} h40" fill="none" stroke="${style.color}" stroke-width="2.5" stroke-dasharray="${style.dash}"/>${marker(style.marker, x+20, legendTop, style.color, 4)}<text x="${x+48}" y="${legendTop+4}" font-size="12">${escape(item.borough)}</text>`;
+      return `<path d="M${x} ${legendTop} h40" fill="none" stroke="${style.color}" stroke-width="2.5" stroke-dasharray="${style.dash}"/>${marker(style.marker, x+20, legendTop, style.color, 4)}<text x="${x+48}" y="${legendTop+4}" font-size="16">${escape(item.borough)}</text>`;
     }).join('') : '';
     const noteY = legendTop + (this.kind === 'trend' ? 38 : 0);
-    const output = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="group" aria-label="${escape(this.heading)}"><style>text { font-family: Segoe UI, Arial, sans-serif; fill: #c5c3ba; } .halo { fill: transparent; stroke: transparent; }</style><rect width="${width}" height="${height}" fill="#080808"/>${titleLines.map((line, i) => `<text x="24" y="${30+i*25}" font-size="20" font-weight="700">${escape(line)}</text>`).join('')}<g transform="translate(0,${plotTop})">${plotMarkup}</g>${legend}<text x="24" y="${noteY}" font-size="12">2017 is partial through September 16. One unspecified-borough report is excluded.</text></svg>`;
+    const output = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="group" aria-label="${escape(this.heading)}"><style>text { font-family: Segoe UI, Arial, sans-serif; fill: #c5c3ba; } .halo { fill: transparent; stroke: transparent; }</style><rect width="${width}" height="${height}" fill="#080808"/>${titleLines.map((line, i) => `<text x="24" y="${30+i*25}" font-size="20" font-weight="700">${escape(line)}</text>`).join('')}<g transform="translate(0,${plotTop})">${plotMarkup}</g>${legend}<text x="24" y="${noteY}" font-size="16" font-weight="600">2017 is partial through September 16. One unspecified-borough report is excluded.</text></svg>`;
     const url = URL.createObjectURL(new Blob([output], { type: 'image/svg+xml' }));
     const link = document.createElement('a');
     link.href = url;

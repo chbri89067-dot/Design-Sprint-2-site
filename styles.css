@@ -391,10 +391,15 @@ thead th {
   color:var(--muted);
 }
 .coverage-note p {
-  font-size:14px;
+  font-size:16px;
   color:#bab9b2;
   max-width:780px;
   margin:0;
+}
+.coverage-note strong {
+  font-family:"Segoe UI",Arial,sans-serif;
+  font-weight:600;
+  color:var(--ink);
 }
 .filters {
   border:0;
