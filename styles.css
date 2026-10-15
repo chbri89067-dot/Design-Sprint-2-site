@@ -747,6 +747,7 @@ thead th {
   max-width:65%;
 }
 .hero h1 {
+  white-space:nowrap;
   font-size:clamp(72px,min(8.4vw,12svh),140px);
   font-weight:300;
   line-height:1;
@@ -822,7 +823,7 @@ thead th {
 @media(max-width:600px) {
   .hero { min-height:700px; padding:48px 22px; }
   .hero-copy { max-width:100%; }
-  .hero h1 { font-size:clamp(66px,18vw,82px); letter-spacing:-2px; margin-bottom:24px; }
+  .hero h1 { font-size:clamp(38px,12vw,68px); letter-spacing:-1.5px; margin-bottom:24px; }
   .hero-description { font-size:16px; max-width:290px; }
   .scroll-prompt { bottom:24px; font-size:12px; letter-spacing:1px; gap:0; padding:0; }
   .scroll-line { display:none; }
