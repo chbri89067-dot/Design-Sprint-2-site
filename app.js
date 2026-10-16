@@ -34,7 +34,7 @@ function updateMotion() {
   updateRat();
 }
 motionButton.addEventListener('click', () => { manuallyPaused = !manuallyPaused; updateMotion(); });
-fetch(new URL('./assets/rat-running.svg', import.meta.url)).then(response => {
+fetch(new URL('./assets/rat-reference-motion.svg?v=20261015-7', import.meta.url)).then(response => {
   if (!response.ok) throw Error('Rat asset unavailable');
   return response.text();
 }).then(source => {
